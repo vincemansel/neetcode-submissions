@@ -1,0 +1,40 @@
+// [Clean]
+class Solution {
+    func checkInclusion(_ s1: String, _ s2: String) -> Bool {
+        // if a char not in freq, skip and reset window
+        // check window == freq // return true
+        // r - l + 1 > s1.count // increment left
+        // and decrease window count of the that Character
+        guard s1.count <= s2.count else { return false }
+        let s2 = Array(s2)
+        var freq = [Character:Int]()
+        var window = [Character:Int]()
+        var l = 0
+
+        for c in s1 {
+            freq[c, default: 0] += 1
+        }
+
+        for r in 0..<s2.count {
+            let c = s2[r]
+            if freq.keys.contains(c) {
+                window[c, default: 0] += 1
+
+                if window == freq {
+                    return true
+                }
+
+                if r - l + 1 >= s1.count {
+                    window[s2[l], default: 0] -= 1
+                    l += 1
+                }
+            }
+            else {
+                window = [Character:Int]()
+                l = r + 1
+            }
+        }
+
+        return false
+    }
+}
